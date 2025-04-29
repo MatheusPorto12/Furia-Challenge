@@ -61,6 +61,9 @@ public class User implements UserDetails{
 
     @Column(name = "user_role")
     private UserRoles role;
+
+    @Column(name="data_nascimento")
+    private String data_nascimento;
     
     @OneToMany
     @JoinColumn(name ="addres_id")
