@@ -6,8 +6,10 @@ type AuthContextType = {
   signup: (
     name: string,
     email: string,
-    phoneNumber: string,
-    password: string
+    Telefone: string,
+    password: string,
+    data_nascimento: string,
+    cpf:string,
   ) => Promise<void>;
   logout: () => void;
   isLoggedIn: boolean;

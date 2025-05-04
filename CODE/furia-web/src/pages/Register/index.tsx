@@ -24,7 +24,7 @@ export default function RegisterPage() {
         }
 
         try {
-            const response = await registerApi(nome, email, password, data_nascimento, cpf, telefone);
+            const response = await registerApi(nome, email, password,data_nascimento,cpf,telefone);
             console.log('Cadastro realizado com sucesso:', response);
             navigate('/login');
         } catch (error) {

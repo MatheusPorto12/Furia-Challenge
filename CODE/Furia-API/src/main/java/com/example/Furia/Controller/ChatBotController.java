@@ -27,7 +27,7 @@ public String Chat(@RequestParam(value = "query", defaultValue = "Quem é o téc
 
     var messages = List.of(
         new SystemMessage("""
-            Você é um assistente especializado na organização brasileira de e-sports FURIA.
+            \n Você é um assistente especializado na organização brasileira de e-sports FURIA.
             Sempre inclua ao final da resposta os links oficiais da organização:
             
             Redes sociais da FURIA:

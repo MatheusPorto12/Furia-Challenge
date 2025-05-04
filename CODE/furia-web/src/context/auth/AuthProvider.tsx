@@ -30,48 +30,59 @@ export const AuthProvider = ({ children }: Props) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await loginApi(email, password);
+      const response = await loginApi(email, password); // Chamada para a API de login
       if (response?.data) {
         const jwt = response.data.token;
-        if (!jwt) throw new Error("Token missing");
-
+        if (!jwt) throw new Error("Token ausente na resposta da API");
+  
         setToken(jwt);
         localStorage.setItem("token", jwt);
         setIsLoggedIn(true);
-        scheduleTokenExpiration(jwt);
-
+  
+        // Decodifica o token JWT
         const decoded: DecodedJWT = jwtDecode(jwt);
+  
+        // Busca os dados do usuário
         const userResponse = await fetchUser(decoded.id);
-        localStorage.setItem("ativo", userResponse.ativo.toString());
-        setIsActive(userResponse.ativo);
-
-        return userResponse.ativo;
+        if (userResponse?.data) {
+          setUser(userResponse.data);
+          setIsActive(userResponse.data.ativo || false); // Verifica se 'ativo' existe
+        } else {
+          throw new Error("Dados do usuário ausentes na resposta da API");
+        }
+  
+        return true;
       } else {
-        throw new Error("Falha no login");
+        throw new Error("Resposta da API de login inválida");
       }
     } catch (error) {
-      console.error("Login error:", error);
-      logout();
-      throw error;
+      console.error("Erro ao fazer login:", error);
+      setIsLoggedIn(false);
+      setToken(null);
+      setUser(null);
+      return false;
     }
   };
 
   const signup = async (
     name: string,
     email: string,
-    password: string
+    password: string,
+    data_nascimento: string,
+    cpf: string,
+    telefone: string
   ) => {
     try {
-      const response = await registerApi(name, email, password);
+      const response = await registerApi(name, email, password, data_nascimento, cpf, telefone);
       const jwt = response.token;
-
+  
       if (!jwt) throw new Error("Token missing");
-
+  
       setToken(jwt);
       localStorage.setItem("token", jwt);
       setIsLoggedIn(true);
       scheduleTokenExpiration(jwt);
-
+  
       const decoded: DecodedJWT = jwtDecode(jwt);
       await fetchUserData(decoded.id);
     } catch (error) {
