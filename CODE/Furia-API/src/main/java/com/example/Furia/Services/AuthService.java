@@ -40,9 +40,13 @@ public User registerUser(RegisterDTO data){
     try {
     String passwordEncrypt= new BCryptPasswordEncoder().encode(data.password());
     User user= new User();
+    user.setNome(data.nome());
     user.setEmail(data.email());
     user.setPassword(passwordEncrypt);
-    user.setAtivo(false);
+    user.setAtivo(true);
+    user.setTelefone(data.Telefone());
+    user.setData_nascimento(data.data_nascimento());
+    user.setCpf(data.cpf());
     user.setData_cadastro(horaCadastro);
     user.setRole(UserRoles.USER);
     userRepository.save(user);
